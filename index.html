@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./Semantic-UI-CSS-master/semantic.css">
+    <link rel="stylesheet" href="./Semantic-UI-CSS-master/semantic.css" />
     <link rel="stylesheet" href="style.css" />
     <title>Crud</title>
   </head>
@@ -16,37 +16,55 @@
         <form class="ui form">
           <div class="field">
             <label>Nom</label>
-            <input type="text" name="nom" placeholder="nom" id="nom"/>
+            <input type="text" name="nom" placeholder="nom" id="nom" />
+            <span id="errnom" style="color: red;"></span>
           </div>
           <div class="field">
             <label>Prenom</label>
             <input type="text" name="prenom" placeholder="prenom" id="prenom" />
+            <span id="errprenom" style="color: red;"></span>
           </div>
           <div class="field">
             <label>Email</label>
-            <input type="email" name="email" placeholder="email" id="email"/>
+            <input type="email" name="email" placeholder="email" id="email" />
+            <span id="erremail" style="color: red;"></span>
           </div>
           <div class="field">
             <label>Poste</label>
             <input type="text" name="poste" placeholder="poste" id="poste" />
+            <span id="errposte" style="color: red;"></span>
           </div>
           <div class="field">
             <label>Numéro de téléphone</label>
             <input
               type="text"
               name="telephone"
-              placeholder="numéro de téléphone" id="phone"
+              placeholder="numéro de téléphone"
+              id="phone"
             />
+            <span id="errphone" style="color: red;"></span>
           </div>
           <div class="field">
             <label>Statut marital</label>
-            <input type="text" name="statut" placeholder="Statut marital" id="statut"/>
+            <input
+              type="text"
+              name="statut"
+              placeholder="Statut marital"
+              id="statut"
+            />
+            <span id="errstatut" style="color: red;"></span>
           </div>
           <div class="field">
             <label>Pays d'origine</label>
-            <input type="text" name="pays" placeholder="Pays d'origine" id="pays" />
+            <input
+              type="text"
+              name="pays"
+              placeholder="Pays d'origine"
+              id="pays"
+            />
+            <span id="errpays" style="color: red;"></span>
           </div>
-          <div class="ui submit button" id="envoyer">Enregistrer</div>
+          <div class="ui submit button" id="envoyer">Ajouter</div>
         </form>
       </div>
       <table class="ui red table">
@@ -62,58 +80,111 @@
             <th></th>
           </tr>
         </thead>
-        <tbody id="afficher">
-        </tbody>
+        <tbody id="afficher"></tbody>
       </table>
     </div>
-    <script src="https://kit.fontawesome.com/ce3a08dc6e.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/ce3a08dc6e.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="/Semantic-UI-CSS-master/semantic.min.js"></script>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-    let list=[];
+    let list = [];
 
-    const btn=document.querySelector('#envoyer');
-    const nom=document.querySelector('#nom');
-    const prenom=document.querySelector('#prenom');
-    const poste=document.querySelector('#poste');
-    const statut=document.querySelector('#statut');
-    const phone=document.querySelector('#phone');
-    const pays=document.querySelector('#pays');
-    const email=document.querySelector('#email');
-    const afficher=document.querySelector('#afficher');
-  
+    const btn = document.querySelector("#envoyer");
+    const nom = document.querySelector("#nom");
+    const prenom = document.querySelector("#prenom");
+    const poste = document.querySelector("#poste");
+    const statut = document.querySelector("#statut");
+    const phone = document.querySelector("#phone");
+    const pays = document.querySelector("#pays");
+    const email = document.querySelector("#email");
+    const afficher = document.querySelector("#afficher");
 
-    btn.addEventListener('click',function(){
-      afficher.innerHTML="";
-      //création d'objet personne
-        let person={
-          nom:nom.value,
-          prenom:prenom.value,
-          estMarie:statut.value,
-          poste:poste.value,
-          email:email.value,
-          phone:phone.value,
-          pays:pays.value
+    btn.addEventListener("click", function () {
+      const errnom = document.querySelector("#errnom");
+      errnom.innerText = "";
+      const errprenom = document.querySelector("#errprenom");
+      errprenom.innerText = "";
+      const erremail = document.querySelector("#erremail");
+      erremail.innerText = "";
+      const errposte = document.querySelector("#errposte");
+      errposte.innerText = "";
+      const errpays = document.querySelector("#errpays");
+      errpays.innerText = "";
+      const errphone = document.querySelector("#errphone");
+      errphone.innerText = "";
+      const errstatut = document.querySelector("#errstatut");
+      errstatut.innerText = "";
+      if (nom.value == "") {
+        errnom.innerHTML = "nom obligatoire";
+      }
+      if (prenom.value == "") {
+        errprenom.innerText = "prenom obligatoire";
+      }
+      if (email.value == "") {
+        erremail.innerText = "email obligatoire";
+      }
+      if (poste.value == "") {
+        errposte.innerText = "poste obligatoire";
+      }
+      if (phone.value == "") {
+        errphone.innerText = "tel obligatoire";
+      }
+      if (statut.value == "") {
+        errstatut.innerText = "statut obligatoire";
+      }
 
-        };
-        //ajout dans le tableau list
-        list.push(person);
-        console.log(person);
-        let row="";
-        //affichage dans la table
-        for(let data of list){
-          row+=`<tr><th>${data.nom}</th><th>${data.prenom}</th><th>${data.email}</th><th>${data.poste}</th><th>${data.phone}</th><th>${data.estMarie}</th><th>${data.pays}</th></tr>`;
+      if (pays.value == "") {
+        errpays.innerText = "pays obligatoire";
+      }
+
+      if (
+        !(
+          nom.value == "" ||
+          prenom.value == "" ||
+          email.value == "" ||
+          poste.value == "" ||
+          phone.value == "" ||
+          statut.value == ""
+        )
+      ) {
+        let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (regex.test(email.value)) {
+          afficher.innerHTML = "";
+          //création d'objet personne
+          let person = {
+            nom: nom.value,
+            prenom: prenom.value,
+            estMarie: statut.value,
+            poste: poste.value,
+            email: email.value,
+            phone: phone.value,
+            pays: pays.value,
+          };
+          //ajout dans le tableau list
+          list.push(person);
+          console.log(person);
+          let row = "";
+          //affichage dans la table
+          for (let data of list) {
+            row += `<tr><th>${data.nom}</th><th>${data.prenom}</th><th>${data.email}</th><th>${data.poste}</th><th>${data.phone}</th><th>${data.estMarie}</th><th>${data.pays}</th></tr>`;
+          }
+          afficher.insertAdjacentHTML("beforeend", row);
+          //vidons notre formulaire
+          nom.value = "";
+          prenom.value = "";
+          statut.value = "";
+          poste.value = "";
+          email.value = "";
+          phone.value = "";
+          pays.value = "";
+        } else {
+          erremail.innerText = "email incorrect";
         }
-        afficher.insertAdjacentHTML('beforeend',row);
-        //vidons notre formulaire
-        nom.value="";
-        prenom.value="";
-        statut.value="";
-        poste.value="";
-        email.value="";
-        phone.value="";
-        pays.value="";
+      }
     });
   </script>
 </html>
