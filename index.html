@@ -16,37 +16,37 @@
         <form class="ui form">
           <div class="field">
             <label>Nom</label>
-            <input type="text" name="nom" placeholder="nom" />
+            <input type="text" name="nom" placeholder="nom" id="nom"/>
           </div>
           <div class="field">
             <label>Prenom</label>
-            <input type="text" name="prenom" placeholder="prenom" />
+            <input type="text" name="prenom" placeholder="prenom" id="prenom" />
           </div>
           <div class="field">
             <label>Email</label>
-            <input type="email" name="email" placeholder="email" />
+            <input type="email" name="email" placeholder="email" id="email"/>
           </div>
           <div class="field">
             <label>Poste</label>
-            <input type="text" name="poste" placeholder="poste" />
+            <input type="text" name="poste" placeholder="poste" id="poste" />
           </div>
           <div class="field">
             <label>Numéro de téléphone</label>
             <input
               type="text"
               name="telephone"
-              placeholder="numéro de téléphone"
+              placeholder="numéro de téléphone" id="phone"
             />
           </div>
           <div class="field">
             <label>Statut marital</label>
-            <input type="text" name="statut" placeholder="Statut marital" />
+            <input type="text" name="statut" placeholder="Statut marital" id="statut"/>
           </div>
           <div class="field">
             <label>Pays d'origine</label>
-            <input type="text" name="pays" placeholder="Pays d'origine" />
+            <input type="text" name="pays" placeholder="Pays d'origine" id="pays" />
           </div>
-          <div class="ui submit button" id="">Submit</div>
+          <div class="ui submit button" id="envoyer">Enregistrer</div>
         </form>
       </div>
       <table class="ui red table">
@@ -62,12 +62,58 @@
             <th></th>
           </tr>
         </thead>
-        <tbody>
-  
+        <tbody id="afficher">
         </tbody>
       </table>
     </div>
     <script src="https://kit.fontawesome.com/ce3a08dc6e.js" crossorigin="anonymous"></script>
     <script src="/Semantic-UI-CSS-master/semantic.min.js"></script>
   </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    let list=[];
+
+    const btn=document.querySelector('#envoyer');
+    const nom=document.querySelector('#nom');
+    const prenom=document.querySelector('#prenom');
+    const poste=document.querySelector('#poste');
+    const statut=document.querySelector('#statut');
+    const phone=document.querySelector('#phone');
+    const pays=document.querySelector('#pays');
+    const email=document.querySelector('#email');
+    const afficher=document.querySelector('#afficher');
+  
+
+    btn.addEventListener('click',function(){
+      afficher.innerHTML="";
+      //création d'objet personne
+        let person={
+          nom:nom.value,
+          prenom:prenom.value,
+          estMarie:statut.value,
+          poste:poste.value,
+          email:email.value,
+          phone:phone.value,
+          pays:pays.value
+
+        };
+        //ajout dans le tableau list
+        list.push(person);
+        console.log(person);
+        let row="";
+        //affichage dans la table
+        for(let data of list){
+          row+=`<tr><th>${data.nom}</th><th>${data.prenom}</th><th>${data.email}</th><th>${data.poste}</th><th>${data.phone}</th><th>${data.estMarie}</th><th>${data.pays}</th></tr>`;
+        }
+        afficher.insertAdjacentHTML('beforeend',row);
+        //vidons notre formulaire
+        nom.value="";
+        prenom.value="";
+        statut.value="";
+        poste.value="";
+        email.value="";
+        phone.value="";
+        pays.value="";
+    });
+  </script>
 </html>
