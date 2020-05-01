@@ -92,6 +92,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
     let list = [];
+    let modificationKey;
 
     const btn = document.querySelector("#envoyer");
     const nom = document.querySelector("#nom");
@@ -164,13 +165,28 @@
             phone: phone.value,
             pays: pays.value,
           };
-          //ajout dans le tableau list
-          list.push(person);
-          console.log(person);
+          if (btn.innerText == "Ajouter") {
+            //ajout dans le tableau list
+            list.push(person);
+            console.log(list);
+          }
+          if(btn.innerText=="Mettre à jour"){
+            list[modificationKey]["nom"]=nom.value;
+            list[modificationKey]["prenom"]=prenom.value;
+            list[modificationKey]["email"]=email.value;
+            list[modificationKey]["poste"]=poste.value;
+            list[modificationKey]["estMarie"]=statut.value;
+            list[modificationKey]["phone"]=phone.value;
+            list[modificationKey]["pays"]=pays.value;
+
+            btn.innerText="Ajouter";
+          }
           let row = "";
           //affichage dans la table
-          for (let data of list) {
-            row += `<tr><th>${data.nom}</th><th>${data.prenom}</th><th>${data.email}</th><th>${data.poste}</th><th>${data.phone}</th><th>${data.estMarie}</th><th>${data.pays}</th></tr>`;
+          for (let i = 0; i < list.length; i++) {
+            row += `<tr><th>${list[i].nom}</th><th>${list[i].prenom}</th><th>${list[i].email}</th><th>${list[i].poste}</th><th>${list[i].phone}</th><th>${list[i].estMarie}</th><th>${list[i].pays}</th><th><a href="#" class="modify" onclick="modification(${i})"><span style="visibility: hidden;">${i}</span><i class="fa fa-pencil fa-lg" aria-hidden="true"></i
+                ></a><a href="#" onclick="suppression(${i})"><span id="delete" style="visibility: hidden;">${i}</span><i class="fa fa-trash fa-lg" aria-hidden="true"></i
+                ></a></th></tr>`;
           }
           afficher.insertAdjacentHTML("beforeend", row);
           //vidons notre formulaire
@@ -186,5 +202,39 @@
         }
       }
     });
+
+    //fonction pour la suppression
+    function suppression(b) {
+      if(confirm('voulez-vous supprimer ?')){
+        list.splice(b, 1);
+      }
+      reAffichage();
+    }
+
+    //fonction pour la modification
+    function modification(c) {
+      btn.innerText = "Mettre à jour";
+      nom.value = list[c].nom;
+      prenom.value = list[c].prenom;
+      email.value = list[c].email;
+      poste.value = list[c].poste;
+      statut.value = list[c].estMarie;
+      pays.value = list[c].pays;
+      phone.value=list[c].phone;
+      modificationKey=c;
+    }
+
+    //fonction pour reaffichage
+    function reAffichage() {
+      afficher.innerHTML = "";
+      let row = "";
+      //affichage dans la table
+      for (let i = 0; i < list.length; i++) {
+        row += `<tr><th>${list[i].nom}</th><th>${list[i].prenom}</th><th>${list[i].email}</th><th>${list[i].poste}</th><th>${list[i].phone}</th><th>${list[i].estMarie}</th><th>${list[i].pays}</th><th><a href="#" class="modify"><span style="visibility: hidden;">${i}</span><i class="fa fa-pencil fa-lg" aria-hidden="true"></i
+                ></a><a href="#" onclick="suppression(${i})""><span id="delete" style="visibility: hidden;">${i}</span><i class="fa fa-trash fa-lg" aria-hidden="true"></i
+                ></a></th></tr>`;
+      }
+      afficher.insertAdjacentHTML("beforeend", row);
+    }
   </script>
 </html>
